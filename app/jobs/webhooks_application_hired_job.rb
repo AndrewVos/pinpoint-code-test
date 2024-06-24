@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "../../lib/pinpoint"
-require_relative "../../lib/hibob"
-
 class WebhooksApplicationHiredJob < ApplicationJob
   queue_as :default
 
