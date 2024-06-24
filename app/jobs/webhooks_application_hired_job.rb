@@ -17,7 +17,7 @@ class WebhooksApplicationHiredJob < ApplicationJob
         "attachments"
       ].find { |attachment| attachment["context"] == "pdf_cv" }
 
-    hibob_api = HiBobApi.new
+    hibob = Hibob.new
 
     hibob_employee = {
       email: pinpoint_application["data"]["attributes"]["email"],
@@ -29,10 +29,10 @@ class WebhooksApplicationHiredJob < ApplicationJob
       }
     }
 
-    create_employee_response = hibob_api.create_employee(hibob_employee)
+    create_employee_response = hibob.create_employee(hibob_employee)
 
     create_shared_document_response =
-      hibob_api.create_shared_document(
+      hibob.create_shared_document(
         create_employee_response["id"],
         pinpoint_pdf["filename"],
         pinpoint_pdf["url"]
