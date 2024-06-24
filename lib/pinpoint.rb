@@ -7,7 +7,7 @@ class Pinpoint
     )
   end
 
-  def self.create_comment_on_application(comment)
+  def self.create_comment_on_application(application_id, comment)
     PinpointClient.post(
       "/api/v1/comments",
       {
@@ -20,7 +20,7 @@ class Pinpoint
             commentable: {
               data: {
                 type: "applications",
-                id: ENV.fetch("PINPOINT_APPLICATION_ID").to_i
+                id: application_id
               }
             }
           }

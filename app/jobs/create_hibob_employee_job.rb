@@ -16,6 +16,10 @@ class CreateHibobEmployeeJob < ApplicationJob
       )
 
     CreateHibobSharedDocumentJob.perform_later(pinpoint_application, employee)
-    AddCommentToPinpointApplicationJob.perform_later(employee)
+
+    AddCommentToPinpointApplicationJob.perform_later(
+      pinpoint_application.fetch(:data).fetch(:id),
+      employee.fetch(:id)
+    )
   end
 end

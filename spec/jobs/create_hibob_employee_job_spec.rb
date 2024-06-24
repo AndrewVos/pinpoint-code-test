@@ -9,10 +9,11 @@ RSpec.describe CreateHibobEmployeeJob, type: :job do
     allow(AddCommentToPinpointApplicationJob).to receive(:perform_later)
   end
 
-  let(:employee) { double(:employee) }
+  let(:employee) { { id: 444 } }
   let(:pinpoint_application) do
     {
       data: {
+        id: 123,
         attributes: {
           email: "email@",
           first_name: "first",
@@ -47,6 +48,6 @@ RSpec.describe CreateHibobEmployeeJob, type: :job do
     )
     expect(AddCommentToPinpointApplicationJob).to have_received(
       :perform_later
-    ).with(employee)
+    ).with(123, 444)
   end
 end

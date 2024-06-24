@@ -8,7 +8,9 @@ class WebhooksController < ApplicationController
 
     if body["event"] == "application_hired"
       head :accepted
-      WebhooksApplicationHiredJob.perform_later(body)
+      WebhooksApplicationHiredJob.perform_later(
+        body["data"]["application"]["id"]
+      )
     else
       head :bad_request
     end

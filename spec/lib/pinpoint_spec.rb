@@ -8,9 +8,6 @@ RSpec.describe Pinpoint, type: :job do
       "http://pinpoint.blah/api"
     )
     allow(ENV).to receive(:fetch).with("PINPOINT_API_KEY").and_return("apikey")
-    allow(ENV).to receive(:fetch).with("PINPOINT_APPLICATION_ID").and_return(
-      "99999"
-    )
   end
 
   describe "#get_application" do
@@ -47,7 +44,7 @@ RSpec.describe Pinpoint, type: :job do
         }
       ).and_return({ created_comment: "response" })
 
-      result = subject.create_comment_on_application("comment")
+      result = subject.create_comment_on_application(99_999, "comment")
       expect(result).to eq({ created_comment: "response" })
     end
   end

@@ -6,13 +6,22 @@ RSpec.describe "WebhooksControllers", type: :request do
       it "starts a job to process the event" do
         allow(WebhooksApplicationHiredJob).to receive(:perform_later)
 
-        post "/webhooks", params: { event: "application_hired" }, as: :json
+        post "/webhooks",
+             params: {
+               event: "application_hired",
+               data: {
+                 application: {
+                   id: 1111
+                 }
+               }
+             },
+             as: :json
 
         expect(response).to have_http_status(:accepted)
 
         expect(WebhooksApplicationHiredJob).to have_received(
           :perform_later
-        ).with(hash_including("event" => "application_hired"))
+        ).with(1111)
       end
     end
 
