@@ -54,6 +54,8 @@ namespace :webhooks do
     # clean up employees that have been created by this test
     existing_employee = find_employee("williams.lockman@pinpoint.dev")
     if existing_employee.present?
+      # update employee email to something random so
+      # that we can do this test again
       update_employee_email(
         existing_employee["id"],
         "#{SecureRandom.uuid}@example.org"
