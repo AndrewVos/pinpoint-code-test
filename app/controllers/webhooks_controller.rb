@@ -5,10 +5,12 @@ class WebhooksController < ApplicationController
 
   def create
     body = JSON.parse(request.body.read)
-    event = body["event"]
 
-    raise "Invalid event #{event}" unless event == "application_hired"
-
-    WebhooksApplicationHiredJob.perform_later(body)
+    if body["event"] == "application_hired"
+      head :accepted
+      WebhooksApplicationHiredJob.perform_later(body)
+    else
+      head :bad_request
+    end
   end
 end
