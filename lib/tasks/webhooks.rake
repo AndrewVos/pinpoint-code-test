@@ -2,9 +2,7 @@
 
 require "http"
 
-if !Rails.env.development?
-  abort("This task can only be executed in development mode")
-end
+return if !Rails.env.development?
 
 def find_employee(email)
   response =
