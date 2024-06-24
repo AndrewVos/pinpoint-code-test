@@ -15,6 +15,6 @@ class HibobClient
       raise "Hibob request failed\nURL:#{url}\nCode: #{response.code}\nBody:#{response.body}"
     end
 
-    response.parse
+    JSON.parse(response.body, symbolize_names: true)
   end
 end

@@ -26,7 +26,9 @@ RSpec.describe HibobClient, type: :job do
     let(:http_response) do
       http_response = double
       allow(http_response).to receive(:status).and_return(http_status)
-      allow(http_response).to receive(:parse).and_return("parsed response")
+      allow(http_response).to receive(:body).and_return(
+        '{"parsed": "response"}'
+      )
       http_response
     end
 
@@ -51,7 +53,7 @@ RSpec.describe HibobClient, type: :job do
 
     it "returns the parsed response" do
       expect(subject.post("some url", { sample: "body" })).to eq(
-        "parsed response"
+        { parsed: "response" }
       )
     end
 
