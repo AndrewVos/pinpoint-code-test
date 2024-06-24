@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe Pinpoint, type: :job do
-  let(:subject) { described_class.new }
+  let(:subject) { described_class }
 
   before do
     allow(ENV).to receive(:fetch).with("PINPOINT_DOMAIN").and_return(

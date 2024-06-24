@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe Hibob do
-  let(:subject) { described_class.new }
+  let(:subject) { described_class }
 
   before do
     allow(ENV).to receive(:fetch).with("HIBOB_SERVICE_USER_ID").and_return(
