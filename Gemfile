@@ -65,4 +65,5 @@ group :test do
   gem "capybara"
   gem "syntax_tree"
   gem "selenium-webdriver"
+  gem "http"
 end
