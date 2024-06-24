@@ -1,89 +1,7 @@
 # frozen_string_literal: true
 
-class PinpointApi
-  def get_application(id)
-    response =
-      HTTP.headers({ "X-API-KEY" => ENV.fetch("PINPOINT_API_KEY") }).get(
-        "#{ENV.fetch("PINPOINT_DOMAIN")}/api/v1/applications/#{id}?extra_fields[applications]=attachments"
-      )
-    JSON.parse(response)
-  end
-
-  def create_comment_on_application(comment)
-    response =
-      HTTP.headers({ "X-API-KEY" => ENV.fetch("PINPOINT_API_KEY") }).post(
-        "#{ENV.fetch("PINPOINT_DOMAIN")}/api/v1/comments",
-        json: {
-          data: {
-            type: "comments",
-            attributes: {
-              body_text: comment
-            },
-            relationships: {
-              commentable: {
-                data: {
-                  type: "applications",
-                  id: ENV.fetch("PINPOINT_APPLICATION_ID")
-                }
-              }
-            }
-          }
-        }
-      )
-
-    if !response.status.success?
-      raise "Failed to create comment on application: #{response.body}"
-    end
-
-    JSON.parse(response)
-  end
-end
-
-class HiBobApi
-  def create_employee(employee)
-    response =
-      HTTP
-        .basic_auth(
-          user: ENV.fetch("HIBOB_SERVICE_USER_ID"),
-          pass: ENV.fetch("HIBOB_SERVICE_USER_PASSWORD")
-        )
-        .headers(
-          { accept: "application/json", content_type: "application/json" }
-        )
-        .post("https://api.hibob.com/v1/people", json: employee)
-
-    if !response.status.success?
-      raise "Failed to create employee: #{response.body}"
-    end
-
-    response.parse
-  end
-
-  def create_shared_document(employee_id, document_name, document_url)
-    response =
-      HTTP
-        .basic_auth(
-          user: ENV.fetch("HIBOB_SERVICE_USER_ID"),
-          pass: ENV.fetch("HIBOB_SERVICE_USER_PASSWORD")
-        )
-        .headers(
-          { accept: "application/json", content_type: "application/json" }
-        )
-        .post(
-          "https://api.hibob.com/v1/docs/people/#{employee_id}/shared",
-          json: {
-            documentName: document_name,
-            documentUrl: document_url
-          }
-        )
-
-    if !response.status.success?
-      raise "Failed to create shared document: #{response.body}"
-    end
-
-    response.parse
-  end
-end
+require_relative "../../lib/pinpoint"
+require_relative "../../lib/hibob"
 
 class WebhooksApplicationHiredJob < ApplicationJob
   queue_as :default
@@ -91,7 +9,7 @@ class WebhooksApplicationHiredJob < ApplicationJob
   def perform(event)
     application_id = event.fetch("data").fetch("application").fetch("id")
 
-    pinpoint_api = PinpointApi.new
+    pinpoint_api = Pinpoint.new
     pinpoint_application = pinpoint_api.get_application(application_id)
 
     pinpoint_pdf =
