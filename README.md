@@ -1,24 +1,32 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Setup
 
-Things you may want to cover:
+```
+bundle install
+```
 
-* Ruby version
+Then, create a `.env` file that looks like:
 
-* System dependencies
+```
+PINPOINT_DOMAIN=
+PINPOINT_API_KEY=
+PINPOINT_APPLICATION_ID=
+HIBOB_SERVICE_USER_ID=
+HIBOB_SERVICE_USER_PASSWORD=
+HIBOB_WORK_SITE=
+```
 
-* Configuration
+Note that `PINPOINT_APPLICATION_ID` is only used for the end to end rake test.
 
-* Database creation
+## Specs
 
-* Database initialization
+```
+bundle exec rspec
+```
 
-* How to run the test suite
+## Testing the full end to end flow
 
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+```
+rails webhooks:application_hired
+```
