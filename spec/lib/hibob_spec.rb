@@ -3,15 +3,6 @@ require "rails_helper"
 RSpec.describe Hibob do
   let(:subject) { described_class }
 
-  before do
-    allow(ENV).to receive(:fetch).with("HIBOB_SERVICE_USER_ID").and_return(
-      "user"
-    )
-    allow(ENV).to receive(:fetch).with(
-      "HIBOB_SERVICE_USER_PASSWORD"
-    ).and_return("password")
-  end
-
   describe "#create_employee" do
     let (:employee) do
       {
